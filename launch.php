@@ -1,3 +1,1 @@
-<?
-exec("/var/www/script.sh");
-?>
+<?php echo exec('sudo /bin/bash -x /var/www/script.sh'); ?>
