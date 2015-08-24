@@ -1,198 +1,255 @@
 
 
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-    <!--
-    SlideShow v1.0
-    Troy Wolf <troy@troywolf.com>
-    Simply define your "slides" in the javascript slides[] array below.
-    -->
-    <html>
-    <head>
-    <title>SiteShow 1.0</title>
-    <meta http-equiv="content-type" content="text/html; charset=windows-1250">
-    <style>
-    /* Change body background-color to change fade out color. */
-    body.siteshow { margin:0; padding:0; background-color:#000000; }
-    #menu
-    {
-        font-family:Arial;
-        font-size:9pt;
-        display:none;
-        opacity:0.00;
-        -mozopacity:0.00;
-        filter:alpha(opacity=0);
-        position:absolute;
-        top:10px;
-        left:10px;
-        padding:5px;
-        background-color:#000000;
-        color:#FFFFFF;
-        border:3px dotted #999999;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+SlideShow v1.0
+Troy Wolf <troy@troywolf.com>
+Simply define your "slides" in the javascript slides[] array below.
+-->
+<html>
+<head>
+<title>Presentation</title>
+<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+<style>
+/* Change body background-color to change fade out color. */
+body.siteshow { margin:0; padding:0; background-color:#FFFFFF;width:1920px;height:1080px; margin: 0; overflow: hidden; }
+#menu
+{
+    font-family:Arial;
+    font-size:9pt;
+    display:none;
+    opacity:0.00;
+    -mozopacity:0.00;
+    filter:alpha(opacity=0);
+    position:absolute;
+    top:10px;
+    left:10px;
+    padding:5px;
+    background-color:#FFFFFF;
+    color:#FFFFFF;
+    border:3px dotted #999999;
+}
+#menu a { color:#ffffff; }
+#menu a:hover { text-decoration:none; }
+#title { font-size:11pt; font-weight:bold; letter-spacing:2; }
+#slides { font-size:9pt; line-height:16pt; }
+.button { width:60px; font-size:9pt; letter-spacing:1; }
+</style>
+<script type="text/javascript">
+var current_idx = 0;
+var slides = new Array();
+var menuwin;
+var show_timer;
+var menu_timer;
+var menu;
+var content;
+var loaded = true;
+// Define your "slides". 3 values for each are:
+//      1. Duration in seconds.
+//      2. Title to be used in menu.
+//      3. Source URL. Can be full URI or a relative URL.
+remplacericipls
+function MenuInit()
+{
+    var html = "";
+    for(idx=1; idx<slides.length; idx++) {
+        html += '<a href="javascript:Navigate('+idx+')">' +
+            slides[idx][1] + "</a><br />\n";
     }
-    #menu a { color:#ffffff; }
-    #menu a:hover { text-decoration:none; }
-    #title { font-size:11pt; font-weight:bold; letter-spacing:2; }
-    #slides { font-size:9pt; line-height:16pt; }
-    .button { width:60px; font-size:9pt; letter-spacing:1; }
-    </style>
-    <script type="text/javascript">
-    var current_idx = 0;
-    var slides = new Array();
-    var menuwin;
-    var show_timer;
-    var menu_timer;
-    var menu;
-    var content;
-    var loaded = true;
-    // Define your "slides". 3 values for each are:
-    //      1. Duration in seconds.
-    //      2. Title to be used in menu.
-    //      3. Source URL. Can be full URI or a relative URL.
-    remplacericipls
-    function MenuInit()
-    {
-        var html = "";
-        for(idx=1; idx<slides.length; idx++) {
-            html += '<a href="javascript:Navigate('+idx+')">' +
-                slides[idx][1] + "</a><br />\n";
-        }
-        document.getElementById("slides").innerHTML = html;
-        menu.style.display = "block";
-    }
-    function MenuShow()
-    {
-        clearTimeout(menu_timer);
-        opacity('menu', 0, 90, 500);
-        menu_timer = setTimeout("MenuHide()", 3500);
-    }
-    function MenuHide()
-    {
-        opacity('menu', 90, 0, 500);
-    }
-    function Pause()
-    {
-        clearTimeout(show_timer);
-        document.getElementById('play').style.display = "block";
-        document.getElementById('pause').style.display = "none";
-    }
-    function Navigate(slide_idx)
-    {
-        clearTimeout(show_timer);
-        if (current_idx == 0) {
-            if (!slide_idx) { slide_idx = 1; }
-            current_idx = slide_idx;
-            content.src = slides[current_idx][2];
-            document.getElementById('play').style.display = "none";
-            document.getElementById('pause').style.display = "block";
-            show_timer = setTimeout("Navigate()", slides[current_idx][0]*1000);
-            return;
-        }
-        if (slide_idx) {
-            current_idx = slide_idx;
-            content.src = slides[current_idx][2];
-            document.getElementById('play').style.display = "block";
-            document.getElementById('pause').style.display = "none";
-            return;
-        }
-        loaded = false;
-        current_idx++;
-        if ( current_idx == slides.length) { current_idx = 1; }
-        opacity('content', 100, 0, 500);
+    document.getElementById("slides").innerHTML = html;
+    menu.style.display = "block";
+}
+function MenuShow()
+{
+    clearTimeout(menu_timer);
+    opacity('menu', 0, 90, 500);
+    menu_timer = setTimeout("MenuHide()", 3500);
+}
+function MenuHide()
+{
+    opacity('menu', 90, 0, 500);
+}
+function Pause()
+{
+    clearTimeout(show_timer);
+    document.getElementById('play').style.display = "block";
+    document.getElementById('pause').style.display = "none";
+}
+function Navigate(slide_idx)
+{
+    clearTimeout(show_timer);
+    if (current_idx == 0) {
+        if (!slide_idx) { slide_idx = 1; }
+        current_idx = slide_idx;
+        content.src = slides[current_idx][2];
         document.getElementById('play').style.display = "none";
         document.getElementById('pause').style.display = "block";
         show_timer = setTimeout("Navigate()", slides[current_idx][0]*1000);
-        return;   
+        return;
     }
-    function opacity(id, opacStart, opacEnd, millisec)
-    {
-        //speed for each frame
-        var speed = Math.round(millisec / 100);
-        var timer = 0;
-        //determine the direction for the blending, if start and end are the same nothing happens
-        if(opacStart > opacEnd) {
-            for(i = opacStart; i >= opacEnd; i--) {
-                setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
-                timer++;
-            }
-            if (opacEnd == 0) { setTimeout("FadeOutTrigger('"+id+"')",((timer-1) * speed));; }
-            //if (opacEnd == 0) { FadeOutTrigger(id); }
-        } else if(opacStart < opacEnd) {
-            if (opacStart == 0) { FadeInTrigger(id); }
-            for(i = opacStart; i <= opacEnd; i++)
-                {
-                setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
-                timer++;
-            }
+    if (slide_idx) {
+        current_idx = slide_idx;
+        content.src = slides[current_idx][2];
+        document.getElementById('play').style.display = "block";
+        document.getElementById('pause').style.display = "none";
+        return;
+    }
+    loaded = false;
+    current_idx++;
+    if ( current_idx == slides.length) { current_idx = 1; }
+    opacity('content', 100, 0, 500);
+    document.getElementById('play').style.display = "none";
+    document.getElementById('pause').style.display = "block";
+    show_timer = setTimeout("Navigate()", slides[current_idx][0]*1000);
+    return;   
+}
+function opacity(id, opacStart, opacEnd, millisec)
+{
+    //speed for each frame
+    var speed = Math.round(millisec / 100);
+    var timer = 0;
+    //determine the direction for the blending, if start and end are the same nothing happens
+    if(opacStart > opacEnd) {
+        for(i = opacStart; i >= opacEnd; i--) {
+            setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
+            timer++;
+        }
+        if (opacEnd == 0) { setTimeout("FadeOutTrigger('"+id+"')",((timer-1) * speed));; }
+        //if (opacEnd == 0) { FadeOutTrigger(id); }
+    } else if(opacStart < opacEnd) {
+        if (opacStart == 0) { FadeInTrigger(id); }
+        for(i = opacStart; i <= opacEnd; i++)
+            {
+            setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
+            timer++;
         }
     }
-    //change the opacity for different browsers
-    function changeOpac(opacity, id)
-    {
-        var object = document.getElementById(id).style;
-        object.opacity = (opacity / 100);
-        object.MozOpacity = (opacity / 100);
-        object.KhtmlOpacity = (opacity / 100);
-        object.filter = "alpha(opacity=" + opacity + ")";
+}
+//change the opacity for different browsers
+function changeOpac(opacity, id)
+{
+    var object = document.getElementById(id).style;
+    object.opacity = (opacity / 100);
+    object.MozOpacity = (opacity / 100);
+    object.KhtmlOpacity = (opacity / 100);
+    object.filter = "alpha(opacity=" + opacity + ")";
+}
+function FadeOutTrigger(id)
+{
+    //alert('FadeOut: '+id);
+    switch(id) {
+    case "menu":
+        document.getElementById(id).style.display = "none";
+        break;
+    case "content":
+        content.src = slides[current_idx][2];
+        //setTimeout("opacity('content', 0, 100, 500)", 1000);
+        break;
+    default:
+        break;
     }
-    function FadeOutTrigger(id)
-    {
-        //alert('FadeOut: '+id);
-        switch(id) {
-        case "menu":
-            document.getElementById(id).style.display = "none";
-            break;
-        case "content":
-            content.src = slides[current_idx][2];
-            //setTimeout("opacity('content', 0, 100, 500)", 1000);
-            break;
-        default:
-            break;
-        }
+}
+function FadeInTrigger(id)
+{
+    //alert('FadeIn: '+id);
+    switch(id) {
+    case "menu":
+        document.getElementById(id).style.display = "block";
+        break;
+    case "content":
+        //opacity('content', 0, 100, 500);
+        break;
+    default:
+        break;
     }
-    function FadeInTrigger(id)
-    {
-        //alert('FadeIn: '+id);
-        switch(id) {
-        case "menu":
-            document.getElementById(id).style.display = "block";
-            break;
-        case "content":
-            //opacity('content', 0, 100, 500);
-            break;
-        default:
-            break;
-        }
+}
+function FadeInContent()
+{
+    if (!loaded) {
+        opacity('content', 0, 100, 500);
+        loaded = true;
     }
-    function FadeInContent()
-    {
-        if (!loaded) {
-            opacity('content', 0, 100, 500);
-            loaded = true;
-        }
-    }
-    function LoadTrigger()
-    {
-        //self.resizeTo(1366,768);
-        menu = document.getElementById('menu');
-        content = document.getElementById('content');
-        Navigate();
-        MenuInit();
-        MenuShow();
-    }
-    window.onload = LoadTrigger;
-    </script>
-    </head>
-    <body class="siteshow">
-    <iframe id="content" name="content" style="width:100%; height:100%;" frameborder="no" scrolling="auto" src="" onmouseover="MenuShow();" onload="FadeInContent();" ></iframe>
-    <div id="menu">
-        <div id="title">SiteShow Menu</div>
-        <div id="slides">
-        </div>
-        <p>
-            <input id="pause" class="button" style="display:block;" type="button" value="pause" onclick="Pause()" />
-            <input id="play" class="button" style="display:none;" type="button" value="play" onclick="Navigate()" />
-        </p>
-    </div>
-    </body>
-    </html>
+}
+function LoadTrigger()
+{
+    //self.resizeTo(1366,768);
+    menu = document.getElementById('menu');
+    content = document.getElementById('content');
+    Navigate();
+    MenuInit();
+    MenuShow();
+}
+window.onload = LoadTrigger;
+</script>
+</head>
+<body class="siteshow">
+<iframe id="content" name="content" style="width:1350px;height:800px;left:44px;top:162px;z-index:2;position:absolute;background:;background-size:contain;" frameborder="no" scrolling="auto" src="" onmouseover="MenuShow();" onload="FadeInContent();" ></iframe>
+
+<div id="menu">
+    <div id="title">SiteShow Menu</div>
+    <div id="slides" style="width:1350px;height:800px;left:44px;top:162px;z-index:2;position:absolute;background:;background-size:contain;"></div>
+    <p>
+        <input id="pause" class="button" style="display:block;" type="button" value="pause" onclick="Pause()" />
+        <input id="play" class="button" style="display:none;" type="button" value="play" onclick="Navigate()" />
+    </p>
+</div>
+<div style="width:504px;height:222px;left:1471px;top:15px;z-index:1;position:absolute;">
+    <script charset='UTF-8' src='http://www.meteofrance.com/mf3-rpc-portlet/rest/vignettepartenaire/631240/type/VILLE_FRANCE/size/PAYSAGE_VIGNETTE' type='text/javascript'></script>
+</div>
+
+<div style="width:479px;height:750px;left:1387px;top:267px;z-index:4;position:absolute;">
+
+    <!-- start sw-rss-feed code --> 
+    <script type="text/javascript"> 
+    <!-- 
+    rssfeed_url = new Array(); 
+    rssfeed_url[0]="http://www.franceinfo.fr/rss.xml";  
+    rssfeed_frame_width="479"; 
+    rssfeed_frame_height="750"; 
+    rssfeed_scroll="on"; 
+    rssfeed_scroll_step="6"; 
+    rssfeed_scroll_bar="off"; 
+    rssfeed_target="_blank"; 
+    rssfeed_font_size="18"; 
+    rssfeed_font_face=""; 
+    rssfeed_border="on"; 
+    rssfeed_css_url=""; 
+    rssfeed_title="on"; 
+    rssfeed_title_name=""; 
+    rssfeed_title_bgcolor="#3366ff"; 
+    rssfeed_title_color="#fff"; 
+    rssfeed_title_bgimage="http://"; 
+    rssfeed_footer="off"; 
+    rssfeed_footer_name="rss feed"; 
+    rssfeed_footer_bgcolor="#fff"; 
+    rssfeed_footer_color="#333"; 
+    rssfeed_footer_bgimage="http://"; 
+    rssfeed_item_title_length="150"; 
+    rssfeed_item_title_color="#666"; 
+    rssfeed_item_bgcolor="#fff"; 
+    rssfeed_item_bgimage="http://"; 
+    rssfeed_item_border_bottom="on"; 
+    rssfeed_item_source_icon="off"; 
+    rssfeed_item_date="off"; 
+    rssfeed_item_description="on"; 
+    rssfeed_item_description_length="150"; 
+    rssfeed_item_description_color="#666"; 
+    rssfeed_item_description_link_color="#333"; 
+    rssfeed_item_description_tag="on"; 
+    rssfeed_no_items="0"; 
+    rssfeed_cache = "757153abfc44175bd2451b5399feb108"; 
+    //--> 
+    </script> 
+    <script type="text/javascript" src="http://feed.surfing-waves.com/js/rss-feed.js"></script> 
+
+</div>
+
+
+<div style="text-align:center;padding:0.5em 0;width:483px;height:83px;left:421px;top:18px;z-index:3;position:absolute;"> 
+    <iframe src="http://www.zeitverschiebung.net/clock-widget-iframe?language=fr&timezone=Europe%2FParis" width="100%" height="130" frameborder="0" seamless></iframe> 
+    
+</div>
+
+</body>
+</html>
 

@@ -1,0 +1,3 @@
+rss : http://www.surfing-waves.com/feed.htm
+météo : http://www.meteofrance.com/meteo-widget#!
+clock : http://www.zeitverschiebung.net/en/clock-widget?timezone=Europe%2FParis&type=city&id=3022988
