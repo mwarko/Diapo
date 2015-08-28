@@ -1,3 +1,0 @@
-A FAIRE :
-http://stackoverflow.com/questions/13848956/executing-a-bash-script-from-a-web-page-via-phps-shell-exec-which-requires-a
-Mettre www-data dans les sudoers : /etc/sudoers : www-data ALL=(ALL:ALL) NOPASSW:ALL (visudo)
